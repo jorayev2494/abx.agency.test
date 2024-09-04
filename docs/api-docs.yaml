@@ -1,0 +1,500 @@
+openapi: 3.0.0
+info:
+  title: 'Documentation of Azb agency test'
+  description: 'Azb agency test'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8011'
+    description: 'Local server'
+  -
+    url: 'http://31.131.17.136:8011'
+    description: 'Staging server'
+paths:
+  /api/positions:
+    get:
+      tags:
+        - Positions
+      summary: 'Get user positions'
+      operationId: d93cea1b485c6a0d983a8469b6beba4e
+      responses:
+        '200':
+          description: Positions
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, example: true }
+                  positions: { type: array, items: { $ref: '#/components/schemas/PositionResource' } }
+                type: object
+  /api/token:
+    post:
+      tags:
+        - Token
+      summary: 'Get a new token'
+      description: "    ## Method returns a token that is required to register a new user.\n        - The token is valid for 40 minutes and can be used for only one request.\n        - For the next registration, you will need to get a new one."
+      operationId: d4cc51d26ac24c9469165e51c53e2ee8
+      responses:
+        '200':
+          description: 'Generated token'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, readOnly: true, example: true }
+                  access_token: { type: string, example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMTEvYXBpL3Rva2VuIiwiaWF0IjoxNzI1MjkyNjM0LCJleHAiOjE3MjUyOTYyMzQsIm5iZiI6MTcyNTI5MjYzNCwianRpIjoielZsWlpsbVVlV2tob2xQTCIsInN1YiI6IjljZWExOTc1LWQwZTctNGY3MC05MzlmLTczNTRmMjljNDA4NCIsInBydiI6IjA2M2Y3ODI5YjVlNDQxZTY1MzUyM2E3NTAxMDY0OTM3MjQxMzQ5NTgifQ.XIUlSNFACyAAyu_SqA4YUE_B6E3xBuxNKUTMbwQdS4s }
+                type: object
+  /api/users:
+    get:
+      tags:
+        - Users
+      summary: 'Return a list of users'
+      operationId: 566aed8efb436ca506e0ef51a032ecd9
+      parameters:
+        -
+          name: page
+          in: query
+          schema:
+            type: integer
+            default: 2
+        -
+          name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 6
+      responses:
+        '200':
+          description: 'Users Paginate'
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - { $ref: '#/components/schemas/UserPaginateCollectResource' }
+                  - { properties: { success: { type: boolean, readOnly: true, example: true }, users: { type: array, items: { $ref: '#/components/schemas/UserResource' } } }, type: object }
+    post:
+      tags:
+        - Users
+      summary: 'Register new user'
+      operationId: be551c1d694a01c164966f58bfa77013
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - first_name
+                - last_name
+                - email
+                - phone
+                - position_id
+                - avatar
+              properties:
+                first_name:
+                  description: 'first_name should contain 2 - 60 characters.'
+                  type: string
+                  maxLength: 60
+                  minLength: 2
+                  example: Alex
+                last_name:
+                  description: 'last_name should contain 2 - 60 characters.'
+                  type: string
+                  maxLength: 60
+                  minLength: 2
+                  example: Alexev
+                email:
+                  description: 'email, must be a valid email according to __RFC2822__.'
+                  type: string
+                  uniqueItems: true
+                  example: alex@gmail.com
+                phone:
+                  description: 'User phone number. Number should start with code of Ukraine __+380__.'
+                  type: string
+                  example: '+380956679696'
+                position_id:
+                  description: 'position_id. You can get list of all positions with their IDs using the API method __GET api/api/positions__.'
+                  type: integer
+                  example: 1
+                avatar:
+                  description: 'The avatar format must be jpeg/jpg type. The avatar will be __copped 70x70 and optimized__ in server.'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '201':
+          description: 'User created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, readOnly: true, example: true }
+                  user_uuid: { type: string, readOnly: true, example: 9ce9b7ac-c76b-4006-a0af-85a95673595f }
+                  message: { type: string, readOnly: true, example: 'New user successfully registered' }
+                type: object
+      security:
+        -
+          bearerAuth: []
+  '/api/users/{uuid}':
+    get:
+      tags:
+        - Users
+      summary: 'Return a user by uuid'
+      operationId: 7ba2f217cd34d220223cf84fe3767123
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 9ce7bebe-eacc-4645-94d1-ba23b61975e0
+      responses:
+        '200':
+          description: 'Show response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, readOnly: true, example: true }
+                  user: { $ref: '#/components/schemas/UserResource' }
+                type: object
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'User not found' }
+                type: object
+    post:
+      tags:
+        - Users
+      summary: 'Update user'
+      operationId: 9d60ab70a64931953d64960c4cf8dc59
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 9ce7bebe-eacc-4645-94d1-ba23b61975e0
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - first_name
+                - last_name
+                - email
+                - phone
+                - position_id
+                - _method
+              properties:
+                first_name:
+                  description: 'first_name should contain 2 - 60 characters.'
+                  type: string
+                  maxLength: 60
+                  minLength: 2
+                  example: Alex
+                last_name:
+                  description: 'last_name should contain 2 - 60 characters.'
+                  type: string
+                  maxLength: 60
+                  minLength: 2
+                  example: Alexev
+                email:
+                  description: 'email, must be a valid email according to __RFC2822__.'
+                  type: string
+                  uniqueItems: true
+                  example: alex@gmail.com
+                phone:
+                  description: 'User phone number. Number should start with code of Ukraine __+380__.'
+                  type: string
+                  example: '+380956679696'
+                position_id:
+                  description: 'position_id. You can get list of all positions with their IDs using the API method __GET api/api/positions__.'
+                  type: integer
+                  example: 1
+                avatar:
+                  description: 'The avatar format must be jpeg/jpg type. The avatar will be __copped 70x70 and optimized__ in server.'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, readOnly: true, example: true }
+                type: object
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'User not found' }
+                type: object
+      security:
+        -
+          bearerAuth: []
+    delete:
+      tags:
+        - Users
+      summary: 'Delete user'
+      operationId: e3acd309c0e73059d1960ec87108839a
+      parameters:
+        -
+          name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 9ce7bebe-eacc-4645-94d1-ba23b61975e0
+      responses:
+        '204':
+          description: 'No Content'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, readOnly: true, example: true }
+                type: object
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'User not found' }
+                type: object
+      security:
+        -
+          bearerAuth: []
+components:
+  schemas:
+    AvatarResource:
+      properties:
+        uuid:
+          type: string
+          readOnly: true
+          example: 9ce82d2d-84b4-475d-845d-5f51b1cae855
+        width:
+          type: integer
+          readOnly: true
+          example: 70
+        height:
+          type: integer
+          readOnly: true
+          example: 70
+        path:
+          type: string
+          readOnly: true
+          example: /users/avatars/70x70
+        mime_type:
+          type: string
+          readOnly: true
+          example: image/jpeg
+        extension:
+          type: string
+          readOnly: true
+          example: jpg
+        size:
+          type: integer
+          readOnly: true
+          example: 949
+        file_name:
+          type: string
+          readOnly: true
+          example: frS7KLXT28k0PL9VPTTUl2SW0RRfUBkd.jpg
+        file_original_name:
+          type: string
+          readOnly: true
+          example: image-15.jpg
+        name:
+          type: string
+          readOnly: true
+          example: frS7KLXT28k0PL9VPTTUl2SW0RRfUBkd.jpg
+        full_path:
+          type: string
+          readOnly: true
+          example: /users/avatars/70x70/frS7KLXT28k0PL9VPTTUl2SW0RRfUBkd.jpg
+        url:
+          type: string
+          readOnly: true
+          example: 'http://localhost:8011/storage/users/avatars/70x70/frS7KLXT28k0PL9VPTTUl2SW0RRfUBkd.jpg'
+        url_pattern:
+          type: string
+          readOnly: true
+          example: '{endpoint}/users/avatars/70x70/frS7KLXT28k0PL9VPTTUl2SW0RRfUBkd.jpg'
+        downloaded_count:
+          type: integer
+          readOnly: true
+          example: 0
+        is_active:
+          type: boolean
+          readOnly: true
+          example: true
+        deleted_at:
+          type: integer
+          readOnly: true
+          example: null
+        created_at:
+          type: integer
+          readOnly: true
+          example: 1725210043
+        updated_at:
+          type: integer
+          readOnly: true
+          example: 1725210043
+        is_cropped:
+          type: boolean
+          readOnly: true
+          example: true
+        is_optimized:
+          type: boolean
+          readOnly: true
+          example: true
+      type: object
+    UserPaginateCollectResource:
+      properties:
+        page:
+          type: integer
+          readOnly: true
+          example: 1
+        total_pages:
+          type: integer
+          readOnly: true
+          example: 3
+        total_users:
+          type: integer
+          readOnly: true
+          example: 16
+        count:
+          type: integer
+          readOnly: true
+          example: 6
+        links:
+          type: object
+          readOnly: true
+          example:
+            prev_url: null
+            next_url: 'http://127.0.0.1:8011/api/users?page=2'
+      type: object
+    CursorPaginateResource:
+      properties:
+        success:
+          type: boolean
+          readOnly: true
+          example: true
+        data:
+          type: object
+          readOnly: true
+        path:
+          type: string
+          readOnly: true
+          example: 'http://127.0.0.1:8011/api/users'
+        per_page:
+          type: integer
+          readOnly: true
+          example: 6
+        next_cursor:
+          type: string
+          readOnly: true
+          example: eyJ1c2Vycy51dWlkIjoiOWNlN2JmMzctNjczYi00ZTA3LWI0MWUtMjE1N2MyOTI1Njc2Ii
+          nullable: true
+        next_page_url:
+          type: string
+          readOnly: true
+          example: 'http://127.0.0.1:8011/api/users?cursor=eyJ1c2Vycy51dWlkIjoiOWNlN2JmMzctNjczYi00ZTA3LWI0MWUtMjE1N2MyOTI1Njc2Ii'
+          nullable: true
+        prev_cursor:
+          type: string
+          readOnly: true
+          example: 'http://127.0.0.1:8011/api/users?cursor=eyJ1c2Vycy51dWlkIjoiOWNlN2JmMzctNjczYi00ZTA3LWI0MWUtMjE1N2MyOTI1Njc2Ii'
+          nullable: true
+        prev_page_url:
+          type: string
+          readOnly: true
+          example: 'http://127.0.0.1:8011/api/users?cursor=eyJ1c2Vycy51dWlkIjoiOWNlN2JmMzctNjczYi00ZTA3LWI0MWUtMjE1N2MyOTI1Njc2Ii'
+          nullable: true
+      type: object
+    PositionResource:
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          example: 5
+        name:
+          type: string
+          readOnly: true
+          example: Designer
+      type: object
+    UserResource:
+      properties:
+        uuid:
+          type: string
+          readOnly: true
+          example: 9ce6ce09-6db6-4ada-9e2d-ccdbc57ee157
+        full_name:
+          type: string
+          readOnly: true
+          example: 'Jimmy Hermiston'
+          nullable: true
+        first_name:
+          type: string
+          readOnly: true
+          example: Jimmy
+          nullable: true
+        last_name:
+          type: string
+          readOnly: true
+          example: Hermiston
+          nullable: true
+        email:
+          type: string
+          readOnly: true
+          example: user@example.net
+        phone:
+          type: string
+          readOnly: true
+          example: '+380956679696'
+        position:
+          type: string
+          readOnly: true
+          example: Designer
+        position_id:
+          type: integer
+          readOnly: true
+          example: 5
+        avatar:
+          oneOf:
+            -
+              $ref: '#/components/schemas/AvatarResource'
+          nullable: true
+          type: object
+          readOnly: true
+        registration_timestamp:
+          type: integer
+          readOnly: true
+          example: 1725302100
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      name: Authorization
+      in: header
+      scheme: bearer
+tags:
+  -
+    name: Positions
+    description: Positions
+  -
+    name: Token
+    description: Token
+  -
+    name: Users
+    description: Users
