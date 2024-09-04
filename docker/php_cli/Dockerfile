@@ -1,17 +1,17 @@
-FROM php:8.3-cli as base
+FROM php:8.3-cli-bullseye as base
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /var/project
 
-RUN apt-get update \
-    && apt-get install -y \
-        librabbitmq-dev \
-        libssh-dev \
-    && docker-php-ext-install \
-        bcmath \
-        sockets
+#RUN apt-get update \
+#    && apt-get install -y \
+#        librabbitmq-dev \
+#        libssh-dev \
+#    && docker-php-ext-install \
+#        bcmath \
+#        sockets
 #endregion
 
 RUN apt-get update \
@@ -28,12 +28,6 @@ RUN apt-get update \
     && apk del autoconf g++ libtool make pcre-dev \
     && apt-get install -y libmagickwand-dev \
     && postgresql-dev \
-    # Extensions
-    && docker-php-ext-install pdo_pgsql \
-    && docker-php-ext-install pgsql \
-    # Enable extensions
-    && docker-php-ext-enable pdo_pgsql \
-    && docker-php-ext-enable pgsql \
     # Image extensions
     && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install gd \
