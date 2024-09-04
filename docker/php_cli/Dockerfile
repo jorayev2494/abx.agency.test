@@ -11,9 +11,7 @@ RUN apt-get update \
         libssh-dev \
     && docker-php-ext-install \
         bcmath \
-        sockets \
-    && pecl install amqp \
-    && docker-php-ext-enable amqp
+        sockets
 #endregion
 
 RUN apt-get update \
