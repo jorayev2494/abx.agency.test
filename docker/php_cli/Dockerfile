@@ -1,18 +1,9 @@
-FROM php:8.3-cli-bullseye as base
+FROM php:8.3-cli as base
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /var/project
-
-#RUN apt-get update \
-#    && apt-get install -y \
-#        librabbitmq-dev \
-#        libssh-dev \
-#    && docker-php-ext-install \
-#        bcmath \
-#        sockets
-#endregion
 
 RUN apt-get update \
     && apt-get install -y libpq-dev \
