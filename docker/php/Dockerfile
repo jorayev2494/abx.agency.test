@@ -27,16 +27,16 @@ RUN apt-get update \
 # Imagick is installed from the archive because regular installation fails
 # See: https://github.com/Imagick/imagick/issues/643#issuecomment-1834361716
 # https://gist.github.com/Wirone/d5c794b4fef0203146a27687e80588a6
-ARG IMAGICK_VERSION=3.7.0
-RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/${IMAGICK_VERSION}.tar.gz \
-    && tar --strip-components=1 -xf /tmp/imagick.tar.gz \
-    && phpize \
-    && ./configure \
-    && make \
-    && make install \
-    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
-    && rm -rf /tmp/*
-    # <<< End of Imagick installation
+#ARG IMAGICK_VERSION=3.7.0
+#RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/${IMAGICK_VERSION}.tar.gz \
+#    && tar --strip-components=1 -xf /tmp/imagick.tar.gz \
+#    && phpize \
+#    && ./configure \
+#    && make \
+#    && make install \
+#    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini \
+#    && rm -rf /tmp/*
+#    # <<< End of Imagick installation
 
 # Install MySQLi
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
