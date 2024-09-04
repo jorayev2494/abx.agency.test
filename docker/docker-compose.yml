@@ -46,7 +46,7 @@ services:
 
     # Database Service
     mysql:
-        image: mysql:8.0
+        image: mysql:${MYSQL_SERVICE_VERSION:-8.0}
         container_name: ${COMPOSE_PROJECT_NAME?Not project name}-mysql
         ports:
             - ${MYSQL_SERVICE_PORT?Not mysql port}:3306
