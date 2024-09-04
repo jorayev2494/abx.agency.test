@@ -33,7 +33,8 @@ CMD ["npm", "run", "dev"]
 
 FROM build-stage AS build
 
-RUN npm run build
+# RUN npm run build
+CMD ["npm", "run", "build"]
 
 ##############################################
 

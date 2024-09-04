@@ -92,7 +92,7 @@ services:
             # - ${FRONT_END_PRODUCTION_PORT}:80
         volumes:
             - ../:/var/project
-        command: [ 'npm', 'run', 'dev' ]
+        # command: [ 'npm', 'run', 'dev' ]
         networks:
             - azb-network
 

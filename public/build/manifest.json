@@ -1,0 +1,94 @@
+{
+  "_index-DHf2ZoRB.js": {
+    "file": "assets/index-DHf2ZoRB.js",
+    "name": "index",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_mappers-kFMuYTL4.js": {
+    "file": "assets/mappers-kFMuYTL4.js",
+    "name": "mappers",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_propertyValues-djaM6W9j.js": {
+    "file": "assets/propertyValues-djaM6W9j.js",
+    "name": "propertyValues"
+  },
+  "_useUploadFile-CccU5wrL.js": {
+    "file": "assets/useUploadFile-CccU5wrL.js",
+    "name": "useUploadFile",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-nCt8bXOo.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/src/views/user/pages/index/Index.vue",
+      "resources/js/src/views/user/pages/show/Index.vue",
+      "resources/js/src/views/user/pages/edit/Index.vue",
+      "resources/js/src/views/user/pages/create/Index.vue"
+    ],
+    "css": [
+      "assets/app-9kx3olKa.css"
+    ]
+  },
+  "resources/js/src/views/user/pages/create/Index.vue": {
+    "file": "assets/Index-CcDIwrTB.js",
+    "name": "Index",
+    "src": "resources/js/src/views/user/pages/create/Index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_propertyValues-djaM6W9j.js",
+      "_useUploadFile-CccU5wrL.js"
+    ]
+  },
+  "resources/js/src/views/user/pages/edit/Index.vue": {
+    "file": "assets/Index-CKqtGtu9.js",
+    "name": "Index",
+    "src": "resources/js/src/views/user/pages/edit/Index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_mappers-kFMuYTL4.js",
+      "_propertyValues-djaM6W9j.js",
+      "_useUploadFile-CccU5wrL.js"
+    ]
+  },
+  "resources/js/src/views/user/pages/index/Index.vue": {
+    "file": "assets/Index-7tgO_n1N.js",
+    "name": "Index",
+    "src": "resources/js/src/views/user/pages/index/Index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_mappers-kFMuYTL4.js",
+      "resources/js/app.js",
+      "_index-DHf2ZoRB.js"
+    ]
+  },
+  "resources/js/src/views/user/pages/show/Index.vue": {
+    "file": "assets/Index-DyJ6296c.js",
+    "name": "Index",
+    "src": "resources/js/src/views/user/pages/show/Index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_mappers-kFMuYTL4.js",
+      "resources/js/app.js",
+      "_propertyValues-djaM6W9j.js",
+      "_index-DHf2ZoRB.js"
+    ]
+  }
+}
