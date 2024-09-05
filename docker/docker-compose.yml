@@ -5,7 +5,6 @@ x-php-cli: &php-cli
         context: ./php_cli
         dockerfile: Dockerfile
         target: ${PHP_CLI_BUILD_TARGET:-${BUILD_TARGET?Build mode php-cli}}
-    # restart: unless-stopped
     working_dir: /var/project
     volumes:
         - ../:/var/project

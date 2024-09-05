@@ -33,7 +33,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'phone' => [
-                'regex' => 'Phone number, should start with code of Ukraine +380',
+                'regex' => 'Phone number must be a Ukrainian number, should start with code of Ukraine +380',
             ],
         ];
     }

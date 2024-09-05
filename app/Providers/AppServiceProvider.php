@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Extensions\Paginator\CustomPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\ServiceProvider;
+use Intervention\Image\Interfaces\ImageManagerInterface;
 use Tinify\Tinify;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,10 +22,21 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             \Intervention\Image\ImageManager::class,
-            static fn () => new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Imagick\Driver())
+            static function (): ImageManagerInterface {
+                // Is cli is worker
+                if (php_sapi_name() === 'cli') {
+                    $driver = new \Intervention\Image\Drivers\Imagick\Driver();
+                } else {
+                    $driver = new class extends \Intervention\Image\Drivers\Imagick\Driver {
+                        public function checkHealth(): void {}
+                    };
+                }
+
+                return new \Intervention\Image\ImageManager($driver);
+            }
         );
 
-         $this->app->alias(CustomPaginator::class, LengthAwarePaginator::class);
+        $this->app->alias(CustomPaginator::class, LengthAwarePaginator::class);
 
         Tinify::setKey(env('TINYPNG_API_KEY'));
     }

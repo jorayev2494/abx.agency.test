@@ -26,9 +26,6 @@ RUN apt-get update \
     && apt-get -y --no-install-recommends install imagemagick php8.2-imagick php8.2-pgsql pdo_pgsql php8.2-mysql pdo nano php8.2-gd php8.2-redis php8.2-bcmath php8.2-zmq \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-RUN docker-php-ext-install pdo pdo_pgsql
-
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 #endregion
 
 # Imagick is installed from the archive because regular installation fails
