@@ -58,3 +58,4 @@ RUN docker-php-ext-enable xdebug
 
 
 FROM base as production
+
