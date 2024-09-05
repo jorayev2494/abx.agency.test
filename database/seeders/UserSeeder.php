@@ -16,7 +16,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class UserSeeder extends Seeder
 {
-    private const USER_COUNT = 10; // 45
+    private const USER_COUNT = 45;
 
     private Collection $positions;
 
