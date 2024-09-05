@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
             \Intervention\Image\ImageManager::class,
             static function (): ImageManagerInterface {
                 // Is cli is worker
-                if (php_sapi_name() === 'cli') {
+                if (getenv('PHP_MODE') === 'php-cli') {
                     $driver = new \Intervention\Image\Drivers\Imagick\Driver();
                 } else {
                     $driver = new class extends \Intervention\Image\Drivers\Imagick\Driver {

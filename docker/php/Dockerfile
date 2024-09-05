@@ -1,5 +1,7 @@
 FROM php:8.3-fpm as base
 
+ENV PHP_MODE php-fpm
+
 # create user
 RUN groupadd -g 1000 laravel
 RUN useradd -u 1000 -ms /bin/bash -g laravel laravel
