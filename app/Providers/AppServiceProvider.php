@@ -22,18 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             \Intervention\Image\ImageManager::class,
-            static function (): ImageManagerInterface {
-                // Is cli is worker
-                if (getenv('PHP_MODE') === 'php-cli') {
-                    $driver = new \Intervention\Image\Drivers\Imagick\Driver();
-                } else {
-                    $driver = new class extends \Intervention\Image\Drivers\Imagick\Driver {
-                        public function checkHealth(): void {}
-                    };
-                }
-
-                return new \Intervention\Image\ImageManager($driver);
-            }
+            static fn (): ImageManagerInterface => new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Imagick\Driver())
         );
 
         $this->app->alias(CustomPaginator::class, LengthAwarePaginator::class);
@@ -46,9 +35,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Event::listen(
-        //     ImageWasSavedEvent::class,
-        //     OptimizeImageListener::class
-        // );
+        //
     }
 }

@@ -1,7 +1,5 @@
 FROM php:8.3-cli as base
 
-ENV PHP_MODE php-cli
-
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
