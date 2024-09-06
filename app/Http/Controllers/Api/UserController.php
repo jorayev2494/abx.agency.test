@@ -44,7 +44,7 @@ readonly class UserController implements HasMiddleware
                 in: 'query',
                 schema: new OA\Schema(
                     type: 'integer',
-                    default: 2,
+                    default: 1,
                 ),
             ),
             new OA\Parameter(
@@ -91,7 +91,7 @@ readonly class UserController implements HasMiddleware
     {
         $users = $this->service->index(
             IndexDTO::make(
-                (int) $request->query->get('per_page') ?: null
+                $request->query->getInt('per_page', 6)
             )
         );
 

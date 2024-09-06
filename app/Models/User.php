@@ -90,7 +90,7 @@ class User extends Model implements AvatarableInterface
         ];
     }
 
-    protected $perPage = 6;
+    // protected $perPage = 6; // We can set pagination per-page
 
     public function fullName(): Attribute
     {
